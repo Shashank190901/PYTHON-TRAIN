@@ -1,0 +1,48 @@
+# Function to check if a queen can be placed at (row, col) on the board
+def is_safe(board, row, col):
+    # Check row
+    for i in range(col):
+        if board[row][i] == 1:
+            return False
+
+    # Check upper diagonal on left side
+    for i, j in zip(range(row, -1, -1), range(col, -1, -1)):
+        if board[i][j] == 1:
+            return False
+
+    # Check lower diagonal on left side
+    for i, j in zip(range(row, 8), range(col, -1, -1)):
+        if board[i][j] == 1:
+            return False
+
+    return True
+
+# Recursive function to solve the 8-Queens problem
+def solve_queens(board, col):
+    if col >= 8:
+        return True
+
+    for i in range(8):
+        if is_safe(board, i, col):
+            board[i][col] = 1
+            if solve_queens(board, col + 1):
+                return True
+            board[i][col] = 0  # Backtrack if placement doesn't lead to a solution
+
+    return False
+
+# Function to display the board with queens placed
+def display_board(board):
+    for row in board:
+        print(' '.join(str(cell) for cell in row))
+
+# Function to solve and display the 8-Queens problem
+def solve_and_display():
+    board = [[0 for _ in range(8)] for _ in range(8)]
+    if solve_queens(board, 0):
+        display_board(board)
+    else:
+        print("No solution found!")
+
+# Execute the function to solve and display the 8-Queens problem
+solve_and_display()
